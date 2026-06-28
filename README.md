@@ -1,7 +1,6 @@
 # College Staff Management System
 
-Database Systems 10127 - Project 2026  
-Ofek Fanian, Idan Gazit, Ori Schnieder
+Database Systems 10127 - Project 2026
 
 ## About
 
