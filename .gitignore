@@ -1,0 +1,19 @@
+# Compiled Java
+out/
+*.class
+
+# Presentation & submission files
+*.pptx
+*.docx
+*.txt
+*.zip
+
+# Presentation build script
+build_presentation.js
+node_modules/
+
+# Claude
+.claude/
+
+# macOS
+.DS_Store
