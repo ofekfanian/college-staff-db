@@ -1,9 +1,3 @@
--- ============================================================
--- College Staff Management System - Database Schema
--- Course: Database Systems 10127 | Project 2026
--- ============================================================
-
--- Drop existing tables (order matters due to foreign keys)
 DROP TABLE IF EXISTS committee_member CASCADE;
 DROP TABLE IF EXISTS article         CASCADE;
 DROP TABLE IF EXISTS committee       CASCADE;
@@ -11,17 +5,11 @@ DROP TABLE IF EXISTS lecturer        CASCADE;
 DROP TABLE IF EXISTS department      CASCADE;
 DROP TABLE IF EXISTS college         CASCADE;
 
--- ============================================================
--- TABLE: college
--- ============================================================
 CREATE TABLE college (
     college_id  SERIAL PRIMARY KEY,
     name        VARCHAR(100) NOT NULL UNIQUE
 );
 
--- ============================================================
--- TABLE: department
--- ============================================================
 CREATE TABLE department (
     dept_id         SERIAL PRIMARY KEY,
     college_id      INT NOT NULL REFERENCES college(college_id) ON DELETE CASCADE,
@@ -30,11 +18,6 @@ CREATE TABLE department (
     UNIQUE (college_id, name)
 );
 
--- ============================================================
--- TABLE: lecturer
--- Single-table inheritance for FIRST / SECOND / DR / PROF.
--- institution is only filled for PROF; NULL for all others.
--- ============================================================
 CREATE TABLE lecturer (
     lecturer_id  VARCHAR(20)    PRIMARY KEY,
     college_id   INT            NOT NULL REFERENCES college(college_id)    ON DELETE CASCADE,
@@ -46,22 +29,12 @@ CREATE TABLE lecturer (
     institution  VARCHAR(150)
 );
 
--- ============================================================
--- TABLE: article
--- Only lecturers with degree DR or PROF can own articles
--- (enforced in the application layer)
--- ============================================================
 CREATE TABLE article (
     article_id   SERIAL PRIMARY KEY,
     title        VARCHAR(200) NOT NULL,
     lecturer_id  VARCHAR(20)  NOT NULL REFERENCES lecturer(lecturer_id) ON DELETE CASCADE
 );
 
--- ============================================================
--- TABLE: committee
--- chairman_id must reference a DR/PROF lecturer (enforced in app)
--- member_degree stores the common degree required for all members
--- ============================================================
 CREATE TABLE committee (
     committee_id   SERIAL PRIMARY KEY,
     college_id     INT          NOT NULL REFERENCES college(college_id) ON DELETE CASCADE,
@@ -71,18 +44,11 @@ CREATE TABLE committee (
     UNIQUE (college_id, name)
 );
 
--- ============================================================
--- TABLE: committee_member   (many-to-many: lecturer <-> committee)
--- ============================================================
 CREATE TABLE committee_member (
     committee_id  INT         NOT NULL REFERENCES committee(committee_id) ON DELETE CASCADE,
     lecturer_id   VARCHAR(20) NOT NULL REFERENCES lecturer(lecturer_id)   ON DELETE CASCADE,
     PRIMARY KEY (committee_id, lecturer_id)
 );
-
--- ============================================================
--- SAMPLE DATA
--- ============================================================
 
 INSERT INTO college (name) VALUES ('Afeka College of Engineering');
 

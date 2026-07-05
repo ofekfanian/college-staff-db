@@ -1,17 +1,3 @@
--- ============================================================
--- Triggers (BONUS) - College Staff Management System
--- Course: Database Systems 10127 | Project 2026
---
--- These triggers enforce, at the DATABASE level, two business
--- rules that the original OOP program enforced only in Java.
--- The point: the rules now hold no matter which client writes
--- to the database (Java app, DataGrip, psql, ...).
--- ============================================================
-
--- ------------------------------------------------------------
--- TRIGGER 1: only DR / PROF lecturers may own articles
--- Mirrors the OOP rule that only Doctor/Professor have articles
--- ------------------------------------------------------------
 CREATE OR REPLACE FUNCTION check_article_author_degree()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -36,10 +22,6 @@ CREATE TRIGGER trg_article_author_degree
     FOR EACH ROW
     EXECUTE FUNCTION check_article_author_degree();
 
--- ------------------------------------------------------------
--- TRIGGER 2: a committee chairman must hold degree DR or PROF
--- Mirrors the OOP rule in Committee.setChairman()
--- ------------------------------------------------------------
 CREATE OR REPLACE FUNCTION check_chairman_degree()
 RETURNS TRIGGER AS $$
 DECLARE
