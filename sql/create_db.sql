@@ -4,6 +4,9 @@ DROP TABLE IF EXISTS committee       CASCADE;
 DROP TABLE IF EXISTS lecturer        CASCADE;
 DROP TABLE IF EXISTS department      CASCADE;
 DROP TABLE IF EXISTS college         CASCADE;
+DROP TYPE  IF EXISTS degree_type;
+
+CREATE TYPE degree_type AS ENUM ('FIRST', 'SECOND', 'DR', 'PROF');
 
 CREATE TABLE college (
     college_id  SERIAL PRIMARY KEY,
@@ -23,7 +26,7 @@ CREATE TABLE lecturer (
     college_id   INT            NOT NULL REFERENCES college(college_id)    ON DELETE CASCADE,
     dept_id      INT                     REFERENCES department(dept_id)    ON DELETE SET NULL,
     name         VARCHAR(100)   NOT NULL,
-    degree       VARCHAR(10)    NOT NULL CHECK (degree IN ('FIRST','SECOND','DR','PROF')),
+    degree       degree_type    NOT NULL,
     degree_name  VARCHAR(100)   NOT NULL,
     salary       DECIMAL(12,2)  NOT NULL CHECK (salary >= 0),
     institution  VARCHAR(150)
@@ -40,7 +43,7 @@ CREATE TABLE committee (
     college_id     INT          NOT NULL REFERENCES college(college_id) ON DELETE CASCADE,
     name           VARCHAR(100) NOT NULL,
     chairman_id    VARCHAR(20)  NOT NULL REFERENCES lecturer(lecturer_id),
-    member_degree  VARCHAR(10)           CHECK (member_degree IN ('FIRST','SECOND','DR','PROF')),
+    member_degree  degree_type,
     UNIQUE (college_id, name)
 );
 
