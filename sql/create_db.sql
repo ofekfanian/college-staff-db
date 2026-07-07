@@ -34,7 +34,7 @@ CREATE TABLE lecturer (
 
 CREATE TABLE article (
     article_id   SERIAL PRIMARY KEY,
-    title        VARCHAR(200) NOT NULL,
+    title        VARCHAR(200) NOT NULL UNIQUE,
     lecturer_id  VARCHAR(20)  NOT NULL REFERENCES lecturer(lecturer_id) ON DELETE CASCADE
 );
 
